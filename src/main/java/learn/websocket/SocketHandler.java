@@ -1,6 +1,5 @@
 package learn.websocket;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -9,12 +8,10 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 @Component
 public class SocketHandler extends TextWebSocketHandler {
-    private final ArrayList<String> state = new ArrayList<>();
     private final HashMap<String, WebSocketSession> sessions = new HashMap<>();
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -26,22 +23,7 @@ public class SocketHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-
-        // this is just text, not JSON
-        state.add(message.getPayload());
-
-        String json;
-        try {
-            json = mapper.writeValueAsString(state);
-        } catch (JsonProcessingException ex) {
-            System.out.println("WS Json Failure:" + ex.getMessage());
-            return;
-        }
-        TextMessage msg = new TextMessage(json);
-
-        for (WebSocketSession s : sessions.values()) {
-            s.sendMessage(msg);
-        }
+        System.out.println("This probably shouldn't happen.");
     }
 
     @Override
